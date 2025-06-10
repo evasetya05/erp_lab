@@ -1,0 +1,59 @@
+{% load django_ledger %}
+{% load i18n %}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-header-title is-size-2">{% trans 'Journal Entry Detail' %}</div>
+    </div>
+    <div class="card-content">
+        <h2 class="is-size-2 has-text-success">{{ journal_entry.je_number }}</h2>
+
+        {% if journal_entry.entity_unit %}
+            <h2 class="is-size-2 has-text-weight-light">{{ journal_entry.entity_unit.name }}</h2>
+        {% endif %}
+
+        <h2 class="is-size-2">{% trans 'Date' %}: {{ journal_entry.timestamp | date }}</h2>
+
+
+        <h3 class="is-size-4">{% trans 'Posted' %}:
+            {% if journal_entry.is_posted %}
+                <span class="icon has-text-success">{% icon 'ant-design:check-circle-filled' 24 %}</span>
+            {% else %}
+                <span class="icon is-small has-text-danger">{% icon 'maki:roadblock-11' 24 %}</span>
+            {% endif %}
+        </h3>
+        <h3 class="is-size-4">{% trans 'Locked' %}:
+            {% if journal_entry.is_locked %}
+                <span class="icon has-text-success">{% icon 'ant-design:check-circle-filled' 24 %}</span>
+            {% else %}
+                <span class="icon is-small has-text-danger">{% icon 'maki:roadblock-11' 24 %}</span>
+            {% endif %}
+        </h3>
+        {% if journal_entry.activity %}
+            <h3 class="is-size-3">{% trans 'Activity' %}: {{ journal_entry.get_activity_display }}</h3>
+        {% endif %}
+        {% if journal_entry.description %}
+            <h4 class="is-size-4 has-text-weight-light">{{ journal_entry.description }}</h4>
+        {% endif %}
+
+    </div>
+    <div class="card-footer">
+        {% if journal_entry.can_lock %}
+            <a href="{{ journal_entry.get_lock_url }}"
+               class="card-footer-item has-text-success has-text-weight-bold">{% trans 'Lock' %}</a>
+        {% endif %}
+        {% if journal_entry.can_unlock %}
+            <a href="{{ journal_entry.get_unlock_url }}"
+               class="card-footer-item has-text-warning has-text-weight-bold">{% trans 'UnLock' %}</a>
+        {% endif %}
+        {% if journal_entry.can_post %}
+            <a href="{{ journal_entry.get_post_url }}"
+               class="card-footer-item has-text-success has-text-weight-bold">{% trans 'Post' %}</a>
+        {% endif %}
+        {% if journal_entry.can_unpost %}
+            <a href="{{ journal_entry.get_unpost_url }}"
+               class="card-footer-item has-text-danger has-text-weight-bold">{% trans 'UnPost' %}</a>
+        {% endif %}
+
+    </div>
+</div>

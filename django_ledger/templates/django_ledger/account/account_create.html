@@ -1,0 +1,27 @@
+{% extends 'django_ledger/layouts/content_layout_1.html' %}
+{% load i18n %}
+{% load static %}
+{% load django_ledger %}
+
+{% block view_content %}
+    <div class="box">
+        <div class="columns is-centered is-multiline">
+            <div class="column is-12 has-text-centered">
+                <h1 class="is-size-2">{% trans 'Create Account' %}</h1>
+                <h2 class="is-size-3 has-text-info">{{ coa_model.name }}</h2>
+                <p class="is-size-4 has-text-danger is-italic">({{ coa_model.slug }})</p>
+            </div>
+            <div class="column is-8-tablet is-6-desktop">
+                <div class="box">
+                    <form method="post" id="{{ form.form_id }}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="button is-primary is-fullwidth djetler_my_1">Submit</button>
+                        <a class="button is-dark is-small is-fullwidth"
+                           href="{{ coa_model.get_account_list_url }}">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

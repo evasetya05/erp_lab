@@ -1,0 +1,69 @@
+{% load i18n %}
+{% load django_ledger %}
+
+{% if style == 'detail' %}
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped is-bordered django-ledger-table-bottom-margin-75">
+            <tr>
+                <th>{% trans 'Timestamp' %}</th>
+                <th>{% trans 'Account' %}</th>
+                <th>{% trans 'Account Name' %}</th>
+                <th>{% trans 'Unit' %}</th>
+                <th>{% trans 'Credit' %}</th>
+                <th>{% trans 'Debit' %}</th>
+                <th>{% trans 'Description' %}</th>
+            </tr>
+            {% for transaction_model in transaction_model_qs %}
+                <tr>
+                    <td>{{ transaction_model.timestamp }}</td>
+                    <td>{{ transaction_model.account_code }}</td>
+                    <td>{{ transaction_model.account_name }}</td>
+                    <td>{% if transaction_model.entity_unit_name %}
+                        {{ transaction_model.entity_unit_name }}{% endif %}</td>
+                    <td>{% if transaction_model.is_credit %}{% currency_symbol %}
+                        {{ transaction_model.amount | currency_format }}{% endif %}</td>
+                    <td>{% if transaction_model.is_debit %}{% currency_symbol %}
+                        {{ transaction_model.amount | currency_format }}{% endif %}</td>
+                    <td>{% if transaction_model.description %}{{ transaction_model.description }}{% endif %}</td>
+                </tr>
+            {% endfor %}
+            <tr class="has-text-weight-bold">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="has-text-right">Total</td>
+                <td>{% currency_symbol %}{{ total_credits | currency_format }}</td>
+                <td>{% currency_symbol %}{{ total_debits | currency_format }}</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+{% elif style == 'compact' %}
+    <div class="table-container">
+        <table class="table is-fullwidth is-narrow is-striped is-bordered django-ledger-table-bottom-margin-75">
+            <tr>
+                <th>{% trans 'Account' %}</th>
+                <th>{% trans 'Account Name' %}</th>
+                <th>{% trans 'Credit' %}</th>
+                <th>{% trans 'Debit' %}</th>
+                <th>{% trans 'Description' %}</th>
+            </tr>
+            {% for transaction_model in transaction_model_qs %}
+                <tr>
+                    <td>{{ transaction_model.account_code }}</td>
+                    <td>{{ transaction_model.account_name }}</td>
+                    <td>{% if transaction_model.is_credit %}{% currency_symbol %}{{ transaction_model.amount | currency_format }}{% endif %}</td>
+                    <td>{% if transaction_model.is_debit %}{% currency_symbol %}{{ transaction_model.amount | currency_format }}{% endif %}</td>
+                    <td>{% if transaction_model.description %}{{ transaction_model.description }}{% endif %}</td>
+                </tr>
+            {% endfor %}
+            <tr class="has-text-weight-bold">
+                <td></td>
+                <td class="has-text-right">{% trans 'Total' %}</td>
+                <td>{% currency_symbol %}{{ total_credits | currency_format }}</td>
+                <td>{% currency_symbol %}{{ total_debits | currency_format }}</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+{% endif %}

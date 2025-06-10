@@ -1,0 +1,379 @@
+{% load django_ledger %}
+{% load i18n %}
+
+
+<div class="table-container">
+    <table class="table is-fullwidth is-narrow is-striped">
+        <tr>
+            <th>{% trans 'Account Number' %}</th>
+            <th>{% trans 'Description' %}</th>
+            {% if tx_digest.by_unit %}
+                <th>{% trans 'Unit' %}</th>
+            {% endif %}
+            <th>{% trans 'Balance Type' %}</th>
+            <th>{% trans 'Balance' %}</th>
+            <th>{% trans 'Actions' %}</th>
+        </tr>
+
+        {# OPERATING INCOME #}
+        <tr>
+            <td><h2 class="is-size-3 has-text-left">{% trans 'Operating Revenues' %}</h2></td>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        {% for acc in tx_digest.income_statement.operating.revenues %}
+            <tr>
+                <td class="has-text-right">{{ acc.code }}</td>
+                <td>{{ acc.name }}</td>
+                {% if tx_digest.by_unit %}
+                    <td>{% if acc.unit_name %}{{ acc.unit_name }}{% endif %}</td>
+                {% endif %}
+                <td class="has-text-centered">
+                    {% if acc.balance_type == 'debit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-down' 24 %}</span>
+                    {% elif acc.balance_type == 'credit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-up' 24 %}</span>
+                    {% endif %}
+                </td>
+                <td>{% currency_symbol %}{{ acc.balance | currency_format }}</td>
+                <td>
+                    <div class="dropdown is-hoverable" id="account-action-{{ account.uuid }}">
+                        <div class="dropdown-trigger">
+                            <button class="button is-small is-rounded"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                                <span>{% trans 'Actions' %}</span>
+                                <span class="icon is-small">{% icon 'bi:arrow-down' 24 %}</span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu-{{ acc.uuid }}" role="menu">
+                            <div class="dropdown-content">
+                                <a href="{% url 'django_ledger:account-detail' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-success">{% trans 'Detail' %}</a>
+                                <a href="{% url 'django_ledger:account-update' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-warning">{% trans 'Update' %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-5 has-text-right">{% trans 'Net Operating Revenues' %}</h2></td>
+            <td class="is-size-5 has-text-weight-bold">
+                {% currency_symbol %}{{ tx_digest.income_statement.operating.net_operating_revenue | currency_format }}</td>
+            <td></td>
+        </tr>
+
+        {# COGS #}
+        <tr>
+            <td><h2 class="is-size-3 has-text-left">{% trans 'Less: Cost of Goods Sold' %}</h2></td>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for acc in tx_digest.income_statement.operating.cogs %}
+            <tr>
+                <td class="has-text-right">{{ acc.code }}</td>
+                <td>{{ acc.name }}</td>
+                {% if tx_digest.by_unit %}
+                    <td>{% if acc.unit_name %}{{ acc.unit_name }}{% endif %}</td>
+                {% endif %}
+                <td class="has-text-centered">
+                    {% if acc.balance_type == 'debit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-down' 24 %}</span>
+                    {% elif acc.balance_type == 'credit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-up' 24 %}</span>
+                    {% endif %}
+                </td>
+                <td>{% currency_symbol %}{{ acc.balance | reverse_sign | currency_format }}</td>
+                <td>
+                    <div class="dropdown is-hoverable" id="account-action-{{ account.uuid }}">
+                        <div class="dropdown-trigger">
+                            <button class="button is-small is-rounded"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                                <span>{% trans 'Actions' %}</span>
+                                <span class="icon is-small">{% icon 'bi:arrow-down' 24 %}</span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu-{{ acc.uuid }}" role="menu">
+                            <div class="dropdown-content">
+                                <a href="{% url 'django_ledger:account-detail' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-success">{% trans 'Detail' %}</a>
+                                <a href="{% url 'django_ledger:account-update' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-warning">{% trans 'Update' %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-5 has-text-right">{% trans 'Net COGS' %}</h2></td>
+            <td class="is-size-5 has-text-weight-bold">
+                {% currency_symbol %}{{ tx_digest.income_statement.operating.net_cogs | currency_format }}</td>
+            <td></td>
+        </tr>
+
+        {# GROSS PROFIT #}
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-4 has-text-right">{% trans 'Gross Profit' %}</h2></td>
+            <td class="is-size-4 has-text-weight-bold">
+                {% currency_symbol %}{{ tx_digest.income_statement.operating.gross_profit | currency_format }}</td>
+            <td></td>
+        </tr>
+
+        {# OPERATING EXPENSES #}
+        <tr>
+            <td><h2 class="is-size-3 has-text-left">{% trans 'Operating Expenses' %}</h2></td>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for acc in tx_digest.income_statement.operating.expenses %}
+            <tr>
+                <td class="has-text-right">{{ acc.code }}</td>
+                <td>{{ acc.name }}</td>
+                {% if tx_digest.by_unit %}
+                    <td>{% if acc.unit_name %}{{ acc.unit_name }}{% endif %}</td>
+                {% endif %}
+                <td class="has-text-centered">
+                    {% if acc.balance_type == 'debit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-down' 24 %}</span>
+                    {% elif acc.balance_type == 'credit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-up' 24 %}</span>
+                    {% endif %}
+                </td>
+                <td>{% currency_symbol %}{{ acc.balance | reverse_sign | currency_format }}</td>
+                <td>
+                    <div class="dropdown is-hoverable" id="account-action-{{ account.uuid }}">
+                        <div class="dropdown-trigger">
+                            <button class="button is-small is-rounded"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                                <span>{% trans 'Actions' %}</span>
+                                <span class="icon is-small">{% icon 'bi:arrow-down' 24 %}</span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu-{{ acc.uuid }}" role="menu">
+                            <div class="dropdown-content">
+                                <a href="{% url 'django_ledger:account-detail' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-success">{% trans 'Detail' %}</a>
+                                <a href="{% url 'django_ledger:account-update' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-warning">{% trans 'Update' %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-5 has-text-right">{% trans 'Net Operating Expenses' %}</h2></td>
+            <td class="is-size-5 has-text-weight-bold">
+                {% currency_symbol %}{{ tx_digest.income_statement.operating.net_operating_expenses | reverse_sign | currency_format }}</td>
+            <td></td>
+        </tr>
+
+
+        {# NET OPERATING INCOME #}
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-4 has-text-right">{% trans 'Net Operating Income (Loss)' %}</h2></td>
+            <td class="is-size-3">
+                {% currency_symbol %}{{ tx_digest.income_statement.operating.net_operating_income| currency_format }}</td>
+            <td></td>
+        </tr>
+
+        {# OTHER REVENUES #}
+        <tr>
+            <td><h2 class="is-size-3 has-text-left">{% trans 'Other Revenues' %}</h2></td>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for acc in tx_digest.income_statement.other.revenues %}
+            <tr>
+                <td class="has-text-right">{{ acc.code }}</td>
+                <td>{{ acc.name }}</td>
+                {% if tx_digest.by_unit %}
+                    <td>{% if acc.unit_name %}{{ acc.unit_name }}{% endif %}</td>
+                {% endif %}
+                <td class="has-text-centered">
+                    {% if acc.balance_type == 'debit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-down' 24 %}</span>
+                    {% elif acc.balance_type == 'credit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-up' 24 %}</span>
+                    {% endif %}
+                </td>
+                <td class="is-size-5">{% currency_symbol %}{{ acc.balance | currency_format }}</td>
+                <td>
+                    <div class="dropdown is-hoverable" id="account-action-{{ account.uuid }}">
+                        <div class="dropdown-trigger">
+                            <button class="button is-small is-rounded"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                                <span>{% trans 'Actions' %}</span>
+                                <span class="icon is-small">{% icon 'bi:arrow-down' 24 %}</span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu-{{ acc.uuid }}" role="menu">
+                            <div class="dropdown-content">
+                                <a href="{% url 'django_ledger:account-detail' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-success">{% trans 'Detail' %}</a>
+                                <a href="{% url 'django_ledger:account-update' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-warning">{% trans 'Update' %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-5 has-text-right">{% trans 'Net Other Revenues' %}</h2></td>
+            <td class="is-size-5 has-text-weight-bold">
+                {% currency_symbol %}{{ tx_digest.income_statement.other.net_other_revenues | currency_format }}</td>
+            <td></td>
+        </tr>
+
+
+        {# OTHER EXPENSES #}
+        <tr>
+            <td><h2 class="is-size-3 has-text-left">{% trans 'Other Expenses' %}</h2></td>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for acc in tx_digest.income_statement.other.expenses %}
+            <tr>
+                <td class="has-text-right">{{ acc.code }}</td>
+                <td>{{ acc.name }}</td>
+                {% if tx_digest.by_unit %}
+                    <td>{% if acc.unit_name %}{{ acc.unit_name }}{% endif %}</td>
+                {% endif %}
+                <td class="has-text-centered">
+                    {% if acc.balance_type == 'debit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-down' 24 %}</span>
+                    {% elif acc.balance_type == 'credit' %}
+                        <span class="icon">{% icon 'bi:arrow-bar-up' 24 %}</span>
+                    {% endif %}
+                </td>
+                <td class="is-size-5">{% currency_symbol %}{{ acc.balance | reverse_sign | currency_format }}</td>
+                <td>
+                    <div class="dropdown is-hoverable" id="account-action-{{ account.uuid }}">
+                        <div class="dropdown-trigger">
+                            <button class="button is-small is-rounded"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                                <span>{% trans 'Actions' %}</span>
+                                <span class="icon is-small">{% icon 'bi:arrow-down' 24 %}</span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu-{{ acc.uuid }}" role="menu">
+                            <div class="dropdown-content">
+                                <a href="{% url 'django_ledger:account-detail' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-success">{% trans 'Detail' %}</a>
+                                <a href="{% url 'django_ledger:account-update' entity_slug=entity_slug coa_slug=acc.coa_slug account_pk=acc.account_uuid %}"
+                                   class="dropdown-item has-text-warning">{% trans 'Update' %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-5 has-text-right">{% trans 'Net Other Expenses' %}</h2></td>
+            <td class="is-size-5 has-text-weight-bold">
+                {% currency_symbol %}{{ tx_digest.income_statement.other.net_other_expenses | currency_format }}</td>
+            <td></td>
+        </tr>
+
+        {# NET OTHER INCOME/LOSS #}
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td></td>
+            <td><h2 class="is-size-4 has-text-right">{% trans 'Net Other Income (Loss)' %}</h2></td>
+            <td class="is-size-3">
+                {% currency_symbol %}{{ tx_digest.income_statement.other.net_other_income | currency_format }}</td>
+            <td></td>
+        </tr>
+
+
+        {# NET INCOME #}
+        <tr>
+            <td></td>
+            {% if tx_digest.by_unit %}
+                <td></td>
+            {% endif %}
+            <td>
+                <h4 class="is-size-4 has-text-right">{{ tx_digest.from_date | date }} {% trans 'through' %} {{ tx_digest.to_date | date }}</h4>
+            </td>
+            <td><h2 class="is-size-3 has-text-right">{% trans 'Net Income' %}</h2></td>
+            <td class="is-size-3 has-text-weight-bold">
+                {% currency_symbol %}{{ tx_digest.income_statement.net_income| currency_format }}</td>
+            <td></td>
+        </tr>
+
+    </table>
+</div>
