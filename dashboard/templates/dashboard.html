@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="{% url 'django_ledger:home' %}">django Ledger</a></li>
+                <li><a href="{% url 'ledger_index' %}">Ledger</a></li>
+                <li><a href="{% url 'post_media:post_media_home' %}">Post Media</a></li>
+            </ul>
+        </aside>
+        <main class="content">
+            <h1>Selamat datang di Dashboard</h1>
+            <p>Silakan pilih menu dari sisi kiri.</p>
+        </main>
+    </div>
+</body>
+</html>

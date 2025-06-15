@@ -7,13 +7,14 @@ BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
-    SECRET_KEY = 'djangoledger1234!DoNotUse!BadIdea!VeryInsecure!'
+    SECRET_KEY = '&9b7(-8cp5)mkz4j8kz*o_%njy944qn1p69ojdz35ui97)_ai8'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.102', 'localhost']
 CSRF_TRUSTED_ORIGINS = ['https://*.preview.app.github.dev']
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -25,6 +26,8 @@ INSTALLED_APPS = [
     'post_media',
     'ckeditor',
     'ckeditor_uploader',
+    'dashboard',
+    'ledger',    
 ]
 
 if DJANGO_LEDGER_GRAPHQL_SUPPORT_ENABLED:

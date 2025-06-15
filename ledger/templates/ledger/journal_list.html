@@ -1,0 +1,36 @@
+<!-- templates/ledger/journal_list.html -->
+
+<h2>Daftar Jurnal</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Tanggal</th>
+            <th>Deskripsi</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for journal in journals %}
+        <tr>
+            <td>{{ journal.date }}</td>
+            <td>{{ journal.description }}</td>
+            <td>
+                {% if journal.is_posted %}
+                    <span style="color: green;">Posted</span>
+                {% else %}
+                    <span style="color: red;">Not Posted</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if not journal.is_posted %}
+                    <a href="{% url 'edit_journal' journal.id %}">Edit</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

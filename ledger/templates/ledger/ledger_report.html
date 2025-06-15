@@ -1,0 +1,41 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Buku Besar</title>
+    <link rel="stylesheet" href="{% static 'ledger/css/ledger_report.css' %}">
+</head>
+<body>
+    <h1>Laporan Buku Besar</h1>
+
+    {% for item in ledger_data %}
+        <h3>{{ item.account.coa }} - {{ item.account.account_name }}</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Deskripsi</th>
+                    <th>Debit</th>
+                    <th>Kredit</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in item.rows %}
+                    <tr>
+                        <td>{{ row.date }}</td>
+                        <td>{{ row.desc }}</td>
+                        <td>{{ row.debit|intcomma }}</td>
+                        <td>{{ row.credit|intcomma }}</td>
+                        <td>{{ row.balance|intcomma }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</body>
+</html>

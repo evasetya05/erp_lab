@@ -1,1 +1,1 @@
-from post_media.models.linkedin import *
+from post_media.models import *

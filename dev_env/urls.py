@@ -8,8 +8,11 @@ from django_ledger.settings import DJANGO_LEDGER_GRAPHQL_SUPPORT_ENABLED
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('django_ledger.urls', namespace='django_ledger')),
-     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('django_ledger/', include('django_ledger.urls', namespace='django_ledger')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('', include('dashboard.urls')),
+    path('post_media/', include('post_media.urls')),
+    path('ledger/', include('ledger.urls')),
 ]
 
 if settings.DEBUG:

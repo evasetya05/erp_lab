@@ -1,0 +1,58 @@
+{% load static %}
+<form method="post" onsubmit="return validateJournal()">
+    {% csrf_token %}
+    
+    <label>Tanggal:</label>
+    <input type="date" name="date" required><br>
+
+    <label>Deskripsi:</label>
+    <input type="text" name="description" required><br><br>
+
+    <h3>Item Jurnal:</h3>
+
+    <table id="entries-table" border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Akun</th>
+                <th>Debit</th>
+                <th>Kredit</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="entries">
+            <tr class="entry">
+                <td>
+                    <select name="account_id[]">
+                        {% for account in accounts %}
+                            <option value="{{ account.id }}">{{ account.account_name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="number" name="debit[]" value="0" step="0.01"></td>
+                <td><input type="number" name="credit[]" value="0" step="0.01"></td>
+                <td><button type="button" onclick="removeEntry(this)">Hapus</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <button type="button" onclick="addEntry()">Tambah Baris</button><br><br>
+    <button type="submit">Simpan Jurnal</button>
+</form>
+
+<h2>{% if edit_mode %}Edit{% else %}Tambah{% endif %} Jurnal</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Tanggal:</label>
+    <input type="date" name="date" value="{{ journal.date|default:today }}"><br>
+
+    <label>Deskripsi:</label>
+    <textarea name="description">{{ journal.description|default:'' }}</textarea><br>
+
+    <!-- Tambahkan form item jika perlu -->
+
+    <button type="submit">Simpan</button>
+</form>
+
+<script src="{% static 'ledger/js/journal.js' %}"></script>

@@ -1,0 +1,209 @@
+html {
+  font-family: 'Josefin Sans', sans-serif;
+  background: #eeeeee;
+  padding: 1rem;
+}
+
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  background: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #000000;
+  margin: 1rem 0;
+}
+
+a {
+  color: orange;
+  text-decoration: none !important;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid lightgray;
+}
+
+nav {
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  padding-top: 0.5rem;
+}
+
+nav h1 {
+  flex: auto;
+}
+
+nav h1 a {
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+}
+
+nav ul  {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content:center;
+}
+
+nav ul li {
+  justify-content:center;
+  text-align: center;
+}
+
+nav ul li a, nav ul li span, header .action {
+  display: block;
+  padding: 0.5rem;
+  margin: 4px 2px 4px 2px;
+}
+
+table {
+  margin-bottom: 1em;
+}
+
+table, th, td {
+  border: 1px solid lightgray;
+  border-collapse: collapse;
+}
+
+th, td {
+  font-size: 16px;
+  padding: 5px 5px 5px 5px;
+}
+
+.content {
+  padding: 0 1rem 1rem;
+  font-size: 20px;
+}
+
+.content > header {
+  display: flex;
+  align-items: flex-end;
+  margin: 3rem 0 2rem 0;
+}
+
+.content > header h1 {
+  flex: auto;
+  font-size: 3em;
+  text-align: center;
+}
+
+.flash {
+  margin: 1em 0;
+  padding: 1em;
+  background: #cae6f6;
+  border: 1px solid #000000;
+}
+
+.content:last-child {
+  margin-bottom: 0;
+}
+
+.content form {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.content label {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.content input, .content form {
+  margin-bottom: 1em;
+  resize: vertical;
+}
+
+input {
+  padding: 8px 8px;
+  font-size: 16px;
+}
+
+.url-form {
+  width: 40em;
+}
+
+.helptext{
+  visibility: hidden;
+}
+
+.centered {
+  text-align: center;
+}
+
+input[type=submit] {
+  font-family: 'Josefin Sans', sans-serif;
+  background-color: #000000;
+  border: none;
+  color: white;
+  padding: 13px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 38px;
+  transition-duration: 0.4s;
+}
+
+input.danger {
+  background-color: #cc2f2e;
+}
+
+input.delete {
+  background-color: #cc2f2e;
+  font-family: 'Josefin Sans', sans-serif;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  font-size: 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 38px;
+  transition-duration: 0.4s;
+}
+
+.button, .shorturl {
+  background-color: #000000;
+  border: none;
+  color: white;
+  padding: 13px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 38px;
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+input[type=submit]:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+a.link{
+  text-decoration: none !important;
+}
+
+a.link:hover {
+  text-decoration: underline !important;
+}
+
+.long_url {
+  color: slategray;
+  font-style: italic;
+  font-size: 16px;
+}
