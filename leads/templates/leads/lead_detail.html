@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+</head>
+
+<h2>{{ lead.name }}</h2>
+<p>Email: {{ lead.email }}</p>
+<p>Status: {{ lead.get_status_display }}</p>
+
+<h3>Interaksi</h3>
+<ul>
+  {% for i in lead.interactions.all %}
+    <li>{{ i.created_at }} - {{ i.note }}</li>
+  {% empty %}
+    <li>Belum ada interaksi.</li>
+  {% endfor %}
+</ul>
+
+<h4>Tambah Interaksi</h4>
+<form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Tambah</button>
+</form>

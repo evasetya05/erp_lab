@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Lead - {{ lead.name }}</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'lead_create' %}">➕ Tambah Lead (Form)</a></li>
+            {% for lead in leads %}
+                <li><a href="{% url 'lead_detail' lead.pk %}">{{ lead.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <h2>{{ lead.name }}</h2>
+    <p><strong>Email:</strong> {{ lead.email }}</p>
+    <p><strong>Status:</strong> {{ lead.get_status_display }}</p>
+
+    <h3>Interaksi</h3>
+    <ul>
+        {% for i in lead.interactions.all %}
+            <li>{{ i.created_at|date:"d M Y H:i" }} - {{ i.note }}</li>
+        {% empty %}
+            <li>Belum ada interaksi.</li>
+        {% endfor %}
+    </ul>
+
+    <h4>Tambah Interaksi</h4>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Tambah</button>
+    </form>
+
+</body>
+</html>

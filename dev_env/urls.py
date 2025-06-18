@@ -13,6 +13,7 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('post_media/', include('post_media.urls')),
     path('ledger/', include('ledger.urls')),
+    path('leads/', include('leads.urls')),
 ]
 
 if settings.DEBUG:

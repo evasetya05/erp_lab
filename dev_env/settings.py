@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'dashboard',
-    'ledger',    
+    'ledger',
+    'leads',
 ]
 
 if DJANGO_LEDGER_GRAPHQL_SUPPORT_ENABLED:
