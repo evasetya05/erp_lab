@@ -1,0 +1,51 @@
+/* Ukuran teks lebih besar dan padding sel */
+table#entries-table {
+    width: 100%;
+    font-size: 16px;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#entries-table th,
+#entries-table td {
+    padding: 10px 15px;
+    text-align: left;
+}
+
+#entries-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+}
+
+#entries-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+#entries-table select,
+#entries-table input[type="number"],
+#entries-table input[type="text"] {
+    width: 100%;
+    font-size: 16px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    font-size: 16px;
+    padding: 6px 12px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+button[type="button"] {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}

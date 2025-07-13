@@ -1,0 +1,98 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Neraca</title>
+    <link rel="stylesheet" href="{% static 'ledger/css/balance_sheet.css' %}">
+</head>
+<body>
+
+    <h2>Laporan Neraca</h2>
+
+    <h3>Aset</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Akun</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in assets %}
+            <tr>
+                <td>{{ item.account.coa }} - {{ item.account.account_name }}</td>
+                <td class="text-right">{{ item.balance|floatformat:0|intcomma }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total">
+                <td><strong>Total Aset</strong></td>
+                <td class="text-right"><strong>{{ total_assets|floatformat:0|intcomma }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Kewajiban</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Akun</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in liabilities %}
+            <tr>
+                <td>{{ item.account.coa }} - {{ item.account.account_name }}</td>
+                <td class="text-right">{{ item.balance|floatformat:0|intcomma }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total">
+                <td><strong>Total Kewajiban</strong></td>
+                <td class="text-right"><strong>{{ total_liabilities|floatformat:0|intcomma }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Ekuitas</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Akun</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in equities %}
+            <tr>
+                <td>{{ item.account.coa }} - {{ item.account.account_name }}</td>
+                <td class="text-right">{{ item.balance|floatformat:0|intcomma }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total">
+                <td><strong>Total Ekuitas</strong></td>
+                <td class="text-right"><strong>{{ total_equities|floatformat:0|intcomma }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>
+        Total Kewajiban + Ekuitas: 
+        {{ total_liabilities|floatformat:0|intcomma }} + 
+        {{ total_equities|floatformat:0|intcomma }} = 
+        {{ total_liabilities|add:total_equities|floatformat:0|intcomma }}
+    </h3>
+
+</body>
+
+<p><strong>Total Aset:</strong> {{ total_assets|intcomma }}</p>
+<p><strong>Total Kewajiban + Ekuitas:</strong> {{ total_liabilities_equity|intcomma }}</p>
+
+{% if not balance_check %}
+    <p style="color:red;"><strong>⚠ Neraca tidak seimbang!</strong></p>
+{% endif %}
+
+
+</html>

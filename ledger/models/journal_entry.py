@@ -16,6 +16,7 @@ class JournalItem(models.Model):
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
     debit = models.IntegerField(default=0)   # ubah dari DecimalField
     credit = models.IntegerField(default=0)  # ubah dari DecimalField
+    note = models.CharField(max_length=255, blank=True, null=True)  # 🆕 Tambahkan keterangan akun
 
     def __str__(self):
         return f"{self.journal_entry.date} - {self.account.account_name}: D {self.debit} / C {self.credit}"

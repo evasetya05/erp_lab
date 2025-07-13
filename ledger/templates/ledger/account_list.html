@@ -1,0 +1,26 @@
+
+<h2>Daftar Akun</h2>
+<a href="{% url 'account_create' %}">+ Tambah Akun Baru</a>
+<table border="1">
+    <tr>
+        <th>Nama Akun</th>
+        <th>Jenis</th>
+        <th>COA</th>
+        <th>Balance Type</th>
+        <th>Status</th>
+    </tr>
+    {% for account in accounts %}
+    <tr>
+        <td>{{ account.account_name }}</td>
+        <td>{{ account.account_type }}</td>
+        <td>{{ account.coa }}</td>
+        <td>{{ account.balance_type }}</td>
+        <td>{{ account.active|yesno:"Aktif,Tidak Aktif" }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">Belum ada akun.</td>
+    </tr>
+    {% endfor %}
+</table>
+

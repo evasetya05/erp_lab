@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from ledger.models import JournalEntry, JournalItem, Account
-from django.utils import timezone
 from django.utils.timezone import now
 
 def create_journal_entry(request):
@@ -10,30 +9,29 @@ def create_journal_entry(request):
 
         journal = JournalEntry.objects.create(date=date, description=description)
 
-        accounts = request.POST.getlist('account')
-        debits = request.POST.getlist('debit')
-        credits = request.POST.getlist('credit')
+        accounts = request.POST.getlist('account_id[]')
+        debits = request.POST.getlist('debit[]')
+        credits = request.POST.getlist('credit[]')
+        notes = request.POST.getlist('note[]')
 
-        for i in range(len(accounts)):
-            account_id = accounts[i]
-            debit = debits[i] or 0
-            credit = credits[i] or 0
-
+        for account_id, debit, credit, note in zip(accounts, debits, credits, notes):
             if not account_id.strip():
-                continue  # skip jika kosong
+                continue
 
             account = get_object_or_404(Account, pk=account_id)
             JournalItem.objects.create(
                 journal_entry=journal,
                 account=account,
-                debit=debit,
-                credit=credit
+                debit=debit or 0,
+                credit=credit or 0,
+                note=note or ''
             )
 
         return redirect('journal_list')
 
     return render(request, 'ledger/journal_entry.html', {
         'today': now().date(),
+        'accounts': Account.objects.all(),
     })
 
 

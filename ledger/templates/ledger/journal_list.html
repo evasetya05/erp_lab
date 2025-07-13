@@ -25,7 +25,7 @@
             </td>
             <td>
                 {% if not journal.is_posted %}
-                    <a href="{% url 'edit_journal' journal.id %}">Edit</a>
+                    <a href="{% url 'journal_edit' journal.id %}">Edit</a>
                 {% else %}
                     -
                 {% endif %}

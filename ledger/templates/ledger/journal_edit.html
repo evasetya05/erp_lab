@@ -1,0 +1,53 @@
+{% load static %}
+{% load humanize %}
+
+<h2>Edit Jurnal</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Tanggal:</label>
+    <input type="date" name="date" value="{{ journal.date }}" disabled><br>
+
+    <label>Deskripsi:</label>
+    <input type="text" name="description" value="{{ journal.description }}" required><br><br>
+
+    <p>Total journal items: {{ journal_items|length }}</p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Akun</th>
+                <th>Debit</th>
+                <th>Kredit</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in journal_items %}
+            <tr>
+                <td>
+                    <select name="account_id[]">
+                        {% for acc in accounts %}
+                            <option value="{{ acc.id }}" {% if acc.id == item.account.id %}selected{% endif %}>
+                                {{ acc }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="number" name="debit[]" value="{{ item.debit }}"></td>
+                <td><input type="number" name="credit[]" value="{{ item.credit }}"></td>
+                <td><input type="text" name="note[]" value="{{ item.note }}"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <label>
+        <input type="checkbox" name="post" value="1" {% if journal.is_posted %}checked{% endif %}>
+        Tandai sebagai "Posted" ke Ledger
+    </label><br><br>
+
+    <button type="submit">Simpan Perubahan</button>
+</form>

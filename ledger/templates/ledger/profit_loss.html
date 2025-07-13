@@ -1,0 +1,40 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Laba Rugi</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #333; }
+        table { width: 60%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 8px 12px; border-bottom: 1px solid #ccc; text-align: right; }
+        th { text-align: left; background-color: #f4f4f4; }
+        .total-row { font-weight: bold; background-color: #eaeaea; }
+    </style>
+</head>
+<body>
+
+    <h2>Laporan Laba Rugi</h2>
+
+    <table>
+        <tr>
+            <th>Kategori</th>
+            <th>Jumlah (Rp)</th>
+        </tr>
+        <tr>
+            <td>Total Pendapatan</td>
+            <td>{{ total_income|intcomma }}</td>
+        </tr>
+        <tr>
+            <td>Total Pengeluaran</td>
+            <td>{{ total_expense|intcomma }}</td>
+        </tr>
+        <tr class="total-row">
+            <td>Laba / Rugi Bersih</td>
+            <td>{{ net_income|intcomma }}</td>
+        </tr>
+    </table>
+
+</body>
+</html>
